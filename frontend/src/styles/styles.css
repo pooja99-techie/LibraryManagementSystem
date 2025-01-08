@@ -85,3 +85,32 @@
     color: #333;
   }
   
+  /* In your styles.css */
+nav {
+  background-color: #333;
+  padding: 10px;
+  color: white;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.dashboard-content {
+  padding: 20px;
+}
+
+.dashboard-content h1 {
+  color: #333;
+}

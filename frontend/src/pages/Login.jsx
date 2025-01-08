@@ -1,28 +1,37 @@
+// Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (!username || !password) {
+  const handleLogin = async () => {
+    if (!email || !password) {
       setError("Both fields are required.");
       return;
     }
 
-    if (username === "admin" && password === "admin123") {
-      localStorage.setItem("token", "admin-token");
-      localStorage.setItem("user", JSON.stringify({ username, role: "admin" }));
-      navigate("/dashboard");
-    } else if (username === "user" && password === "user123") {
-      localStorage.setItem("token", "user-token");
-      localStorage.setItem("user", JSON.stringify({ username, role: "user" }));
-      navigate("/dashboard");
-    } else {
-      setError("Invalid credentials.");
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify({ email: data.email, role: data.role }));
+        navigate("/library-home");  // Redirect to library home after successful login
+      } else {
+        setError(data.message || "Login failed. Please try again.");
+      }
+    } catch (err) {
+      setError("Server error. Please try again later.");
     }
   };
 
@@ -30,10 +39,10 @@ const Login = () => {
     <div className="login-page">
       <h2>Login</h2>
       <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"

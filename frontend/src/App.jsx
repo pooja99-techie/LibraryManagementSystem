@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Maintenance from "./pages/Maintenance";
 import Reports from "./pages/Reports";
 import Transactions from "./pages/Transactions";
+import UserManagement from "./pages/UserManagement";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
       <Routes>
         {/* Public Route */}
         <Route path="/" element={<Login />} />
-
+        
         {/* Protected Routes */}
         <Route
           path="/dashboard"
@@ -30,6 +31,10 @@ function App() {
         <Route
           path="/transactions"
           element={<ProtectedRoute><Transactions /></ProtectedRoute>}
+        />
+        <Route
+          path="/user-management"
+          element={<ProtectedRoute role="admin"><UserManagement /></ProtectedRoute>}
         />
       </Routes>
     </Router>

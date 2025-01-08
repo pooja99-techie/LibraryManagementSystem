@@ -1,25 +1,41 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/");
-  };
+  const user = JSON.parse(localStorage.getItem("user"));
+  
+  // If there's no user or the user object is invalid, return nothing
+  if (!user) return null;
 
   return (
-    <nav className="navbar">
-      <h1>Library Management</h1>
-      <div className="links">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/maintenance">Maintenance</Link>
-        <Link to="/reports">Reports</Link>
-        <Link to="/transactions">Transactions</Link>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-      </div>
+    <nav>
+      <ul>
+        <li>
+          <Link to="/dashboard">Dashboard</Link>
+        </li>
+        {user.role === "admin" ? (
+          <>
+            <li>
+              <Link to="/maintenance">Maintenance</Link>
+            </li>
+            <li>
+              <Link to="/user-management">User Management</Link>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to="/reports">Reports</Link>
+            </li>
+            <li>
+              <Link to="/transactions">Transactions</Link>
+            </li>
+          </>
+        )}
+        <li>
+          <Link to="/">Logout</Link>
+        </li>
+      </ul>
     </nav>
   );
 };

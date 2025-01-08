@@ -3,10 +3,15 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { authenticateJWT } from './middleware/authMiddleware.js'; // Ensure correct import path
 import authRoutes from './routes/authRoutes.js'; // Import authentication routes
+import cors from 'cors';
+
 
 dotenv.config();
 
+
 const app = express();
+app.use(cors()); // Allow all origins (for local development)
+
 
 // Middleware
 app.use(express.json());  // To parse JSON request bodies
